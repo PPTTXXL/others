@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinatobacco.dao.CommodityDao">
+	<resultMap type="Commodity" id="resultMap1">
+		<id column="comid" property="comid" />
+		<association property="comstate"
+			select="com.chinatobacco.dao.ComstateDao.selectOne" column="stareid" />
+		<association property="comtype"
+			select="com.chinatobacco.dao.ComtypeDao.selectOne" column="comtypeid" />
+	</resultMap>
+	<select id="selectAll" resultMap="resultMap1">
+		select * from commodity
+	</select>
+	<select id="selectOne" resultMap="resultMap1">
+		select * from commodity where
+		comid=#{comid}
+	</select>
+	<select id="selectByType" resultMap="resultMap1">
+		select * from commodity
+		where
+		comtypeid=#{comtypeid}
+	</select>
+	<select id="selectByState" resultMap="resultMap1">
+		select * from commodity
+		where
+		stareid=#{stareid}
+	</select>
+	<select id="selectQuery" resultMap="resultMap1">
+		select * from commodity
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="comid!=0">
+				and comid = #{comid}
+			</if>
+			<if test="comtypeid!=0">
+				and comtypeid = #{comtypeid}
+			</if>
+			<if test="comname!=null">
+				and comname like '%${comname}%'
+			</if>
+			<if test="stareid!=0">
+				and stareid = #{stareid}
+			</if>
+		</trim>
+	</select>
+	<select id="selectByName" resultMap="resultMap1">
+		select * from commodity
+		where comname like '%${comname}%'
+	</select>
+	<insert id="add">
+		insert into commodity
+		(comtypeid,comname,price,comimg,stareid,info)value(#{comtypeid},#{comname},#{price},#{comimg},#{stareid},#{info})
+	</insert>
+	<delete id="delete">
+		delete from commodity where comid in
+		<foreach collection="array" item="comid" open="(" separator=","
+			close=")">
+			#{comid}
+		</foreach>
+	</delete>
+	<update id="update">
+		update commodity
+		<set>
+			<if test="comtypeid!=0">
+				comtypeid=#{comtypeid},
+			</if>
+			<if test="comname!=null">
+				comname=#{comname},
+			</if>
+			<if test="price!=0">
+				price=#{price},
+			</if>
+			<if test="comimg!=null">
+				comimg=#{comimg},
+			</if>
+			<if test="stareid!=0">
+				stareid=#{stareid},
+			</if>
+			<if test="info!=null">
+				info=#{info},
+			</if>
+		</set>
+		where comid=#{comid}
+	</update>
+</mapper>

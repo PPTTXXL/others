@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinatobacco.dao.MoneylistDao">
+	<resultMap type="Moneylist" id="resultMap1">
+		<id column="mlid" property="mlid" />
+		<association property="moneylisttype"
+			select="com.chinatobacco.dao.MoneylisttypeDao.selectOne" column="id" />
+	</resultMap>
+	<select id="selectAll" resultMap="resultMap1">
+		select * from moneylist
+	</select>
+
+	<select id="selectByType" resultMap="resultMap1">
+		select * from moneylist
+		where id = #{id}
+	</select>
+
+	<select id="selectByDate" resultMap="resultMap1">
+		select * from moneylist
+		where date = #{date}
+	</select>
+
+	<select id="selectQuery" resultMap="resultMap1">
+		select * from moneylist
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="id!=0">
+				and id = #{id}
+			</if>
+			<if test="mlid!=0">
+				and mlid = #{mlid}
+			</if>
+			<if test="direction!=null">
+				and direction like '%${direction}%'
+			</if>
+			<if test="date!=null">
+				and date = #{date}
+			</if>
+		</trim>
+	</select>
+
+	<select id="selectByDirection" resultMap="resultMap1">
+		select * from
+		moneylist
+		where direction like '%${direction}%'
+	</select>
+
+
+	<insert id="add">
+		insert into moneylist
+		(id,moneynum,date,direction)
+		values
+		(#{id},#{moneynum},#{date},#{direction})
+	</insert>
+
+	<delete id="delete">
+		delete from moneylist where mlid = #{mlid}
+	</delete>
+
+
+</mapper>

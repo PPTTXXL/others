@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinatobacco.dao.InforamationDao">
+	<resultMap type="Inforamation" id="resultMap2">
+		<id column="infoid" property="infoid" />
+		<association property="user"
+			select="com.chinatobacco.dao.UserDao.selectById" column="uid" />
+	</resultMap>
+	<!-- 查询所有信息(多表联查-员工姓名) -->
+
+	<select id="selectAll" resultMap="resultMap2">
+		select * from inforamation
+	</select>
+
+
+	<!-- 显示首页的8条信息，以编号倒序排列(多表联查-员工姓名) -->
+	<select id="selectEight" resultMap="resultMap2">
+		select * from inforamation
+		order by infoid desc limit 0,8 
+	</select>
+
+	<!-- 显示一条信息详情(多表联查-员工姓名) -->
+	<select id="selectOne" resultType="Inforamation">
+		select * from inforamation
+		where infoid = #{infoid}
+	</select>
+
+
+	<!-- 添加一条信息 -->
+	<insert id="add">
+		insert into inforamation (uid,title,outline,info)
+		values
+		(#{uid},#{title},#{outline},#{info})
+	</insert>
+
+
+	<!-- 批量删除信息 -->
+	<delete id="delete">
+		delete from inforamation where infoid in
+		<foreach collection="array" item="infoid" open="(" separator=","
+			close=")">
+			#{infoid}
+		</foreach>
+
+	</delete>
+
+	<!-- 修改信息 -->
+	<update id="update">
+		update inforamation
+		<set>
+			<if test="title!=null">
+				title=#{title},
+			</if>
+			<if test="outline!=null">
+				outline=#{outline},
+			</if>
+			<if test="info!=null">
+				info=#{info}
+			</if>
+		</set>
+		where infoid=#{infoid}
+	</update>
+
+
+</mapper>

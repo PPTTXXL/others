@@ -1,0 +1,29 @@
+a {
+	text-decoration: none;
+}
+
+.d {
+	width: 100%;
+	height:1000Px;
+	background-color: rgb(234,234,244);
+}
+
+.d1 {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-size: 100% auto;
+	background-image: url(../img/1.bmp);
+	background-repeat: no-repeat;
+	width: 1000px;
+	height: 600px;
+}
+
+.d2 {
+	width: 400px;
+	height: 400px;
+	position: absolute;
+	top: 20%;
+	left: 50%;
+}

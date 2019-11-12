@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinatobacco.dao.StoreDao">
+	<resultMap type="Store" id="resultMap1">
+		<id column="storeid" property="storeid" />
+		<association property="storelevel"
+			select="com.chinatobacco.dao.StorelevelDao.selectOne" column="lvid" />
+	</resultMap>
+	<select id="selectAll" resultMap="resultMap1">
+		select * from store
+	</select>
+	<select id="selectOne" resultMap="resultMap1">
+		select * from store where
+		storeid = #{storeid}
+	</select>
+	<select id="selectByPass" resultMap="resultMap1">
+		select * from store where
+		storeid = #{storeid} and password =#{password}
+	</select>
+	<select id="selectByLv" resultMap="resultMap1">
+		select * from store where
+		lvid
+		= #{lvid}
+	</select>
+	<select id="selectByName" resultMap="resultMap1">
+		select * from store where
+		storename like '%${storename}%'
+	</select>
+	<insert id="add">
+		insert into store (lvid,password,storename,storeaddr)
+		values
+		(#{lvid},#{password},#{storename},#{storeaddr})
+	</insert>
+	<delete id="delete">
+		delete from store where storeid = #{storeid}
+	</delete>
+	<update id="update">
+		update store
+		<set>
+			<if test="lvid!=0">
+				lvid=#{lvid},
+			</if>
+			<if test="password!=null">
+				password=#{password},
+			</if>
+			<if test="storename!=null">
+				storename=#{storename},
+			</if>
+			<if test="storeaddr!=null">
+				storeaddr=#{storeaddr},
+			</if>
+		</set>
+		where storeid=#{storeid}
+	</update>
+</mapper>

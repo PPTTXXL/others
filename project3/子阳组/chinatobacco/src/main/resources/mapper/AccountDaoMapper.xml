@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinatobacco.dao.AccountDao">
+
+
+	<!-- 查询所有账户信息 -->
+	<select id="selectAll" resultType="Account">
+		select * from account
+	</select>
+
+	<!-- 根据账号查询账户对象 -->
+	<select id="selectOne" resultType="Account">
+		select * from account where
+		accid =#{accid}
+	</select>
+
+	<!-- 添加一个账户对象 -->
+	<insert id="add">
+		insert into account (accid,balance) value
+		(#{accid},#{balance})
+	</insert>
+
+	<!-- 根据账号删除一个账户对象 -->
+	<delete id="delete">
+		delete from account where accid =#{accid}
+	</delete>
+
+	<!-- 修改账户信息 -->
+	<update id="update">
+		update account
+		<set>
+			<if test="balance!=0">
+				balance=#{balance},
+			</if>
+		</set>
+		where accid=#{accid}
+	</update>
+
+</mapper>

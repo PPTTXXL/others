@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinatobacco.dao.LocationDao">
+
+	<resultMap type="Location" id="resultMap3">
+		<id column="locid" property="locid" />
+		<association property="shelf"
+			select="com.chinatobacco.dao.ShelfDao.selectOne" column="shelfid" />
+		<association property="ent"
+			select="com.chinatobacco.dao.EntDao.selectOne" column="entid" />
+	</resultMap>
+
+
+	<!-- 查询所有库位信息（多表联查-仓库名称，货架名称） -->
+	<select id="selectAll" resultMap="resultMap3">
+		select * from
+		location
+	</select>
+
+	<!-- 查询一个库位信息（多表联查-仓库名称，货架名称） -->
+	<select id="selectOne" resultMap="resultMap3">
+		select * from location where
+		locid = #{locid}
+	</select>
+
+	<!-- 添加一个库位 -->
+
+	<insert id="add">
+		insert into location (entid,shelfid) values
+		(#{entid},#{shelfid})
+	</insert>
+	
+	<delete id="delete">
+		delete from location where locid=#{locid}
+	</delete>
+	<update id="update">
+		update location
+		<set>
+			<if test="entid!=0">
+				entid=#{entid},
+			</if>
+			<if test="shelfid!=0">
+				shelfid=#{shelfid}
+			</if>
+		</set>
+		where locid=#{locid}
+	</update>
+
+</mapper>

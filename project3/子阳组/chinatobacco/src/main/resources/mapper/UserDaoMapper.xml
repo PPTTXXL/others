@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinatobacco.dao.UserDao">
+	<resultMap type="User" id="resultMap1">
+		<id column="uid" property="uid" />
+		<association property="role"
+			select="com.chinatobacco.dao.RoleDao.selectOne" column="roleid" />
+	</resultMap>
+	<select id="selectAll" resultMap="resultMap1">
+		select * from user
+	</select>
+	<select id="selectByRole" resultMap="resultMap1">
+		select * from user where
+		roleid = #{roleid}
+	</select>
+	<select id="selectByName" resultMap="resultMap1">
+		select * from user where
+		uname like '%${uname}%'
+	</select>
+	<select id="selectQuery" resultMap="resultMap1">
+		select * from user
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="uid!=0">
+				and uid = #{uid}
+			</if>
+			<if test="roleid!=0">
+				and roleid = #{roleid}
+			</if>
+			<if test="usex!=null">
+				and usex = #{usex}
+			</if>
+			<if test="uname!=null">
+				and uname like '%${uname}%'
+			</if>
+			<if test="uaddr!=null">
+				and uaddr like '%${uaddr}%'
+			</if>
+		</trim>
+	</select>
+	<select id="selectById" resultMap="resultMap1">
+		select * from user where uid
+		=#{uid}
+	</select>
+	<select id="selectByPass" resultMap="resultMap1">
+		select * from user where uid
+		=#{uid} and password=#{password}
+	</select>
+	<insert id="add">
+		insert into
+		user(roleid,uname,password,usex,uaddr)value
+		(#{roleid},#{uname},#{password},#{usex}, #{uaddr})
+	</insert>
+	<delete id="delete">
+		delete from user where uid=#{uid}
+	</delete>
+	<update id="update">
+		update user
+		<set>
+			<if test="roleid!=0">
+				roleid=#{roleid},
+			</if>
+			<if test="uname!=null">
+				uname=#{uname},
+			</if>
+			<if test="password!=null">
+				password=#{password},
+			</if>
+			<if test="usex!=null">
+				usex=#{usex},
+			</if>
+			<if test="uaddr!=null">
+				uaddr=#{uaddr},
+			</if>
+		</set>
+		where uid=#{uid}
+	</update>
+</mapper>
+
+
+
+

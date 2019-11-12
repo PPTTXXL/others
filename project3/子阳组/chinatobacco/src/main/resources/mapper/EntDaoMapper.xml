@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinatobacco.dao.EntDao">
+	<select id="selectAll" resultType="Ent">
+		select * from ent
+	</select>
+	
+	<select id="selectOne" resultType="Ent">
+		select * from ent where entid = #{entid}
+	</select>
+	
+	<insert id="add">
+		insert into ent (entname) values (#{entname})
+	</insert>
+	
+	<delete id="delete">
+		delete from ent where entid = #{entid}
+	</delete>
+	
+	<update id="update">
+		update ent
+		<set>
+			<if test="entname!=null">
+				entname=#{entname},
+			</if>
+		</set>
+		where entid=#{entid}
+	</update>
+</mapper>

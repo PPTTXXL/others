@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinatobacco.dao.RoleDao">
+	<select id="selectAll" resultType="Role">
+		select * from role
+	</select>
+	<select id="selectOne" resultType="Role">
+		select * from role where
+		roleid=#{roleid}
+	</select>
+	<insert id="add">
+		insert into role
+		(name,empmanage,rolemanage,storemanage,entrepotmanage,repertorymanage,financemanage,indentmanage,commoditymanage,delivery)
+		values
+		(#{name},#{empmanage},#{rolemanage},#{storemanage},#{entrepotmanage},#{repertorymanage},#{financemanage},#{indentmanage},#{commoditymanage},#{delivery})
+	</insert>
+	<delete id="delete">
+		delete from role where roleid =#{roleid}
+	</delete>
+	<update id="update">
+		update role set
+		name=#{name},empmanage=#{empmanage},rolemanage=#{rolemanage},storemanage=#{storemanage},entrepotmanage=#{entrepotmanage},repertorymanage=#{repertorymanage},financemanage=#{financemanage},indentmanage=#{indentmanage},commoditymanage=#{commoditymanage},delivery=#{delivery}
+		where roleid=#{roleid}
+	</update>
+</mapper>

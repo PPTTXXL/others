@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinatobacco.dao.ApprovalstateDao">
+
+	<select id="selectAll" resultType="Approvalstate">
+		select * from
+		approvalstate
+	</select>
+
+	<select id="selectOne" resultType="Approvalstate">
+		select * from approvalstate
+		where apstaid = #{apstaid}
+	</select>
+	<insert id="add">
+		insert into approvalstate (apstaname)
+		value
+		(#{apstaname})
+	</insert>
+	<delete id="delete">
+		delete from approvalstate where apstaid in
+		<foreach collection="array" item="apstaid" open="(" separator=","
+			close=")">
+			#{apstaid}
+		</foreach>
+	</delete>
+	<update id="update">
+		update approvalstate
+		<set>
+			<if test="apstaname!=null">
+				apstaname=#{apstaname},
+			</if>
+		</set>
+		where apstaid=#{apstaid}
+	</update>
+
+</mapper>

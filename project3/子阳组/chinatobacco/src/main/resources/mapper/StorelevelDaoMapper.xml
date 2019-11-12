@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinatobacco.dao.StorelevelDao">
+	<select id="selectAll" resultType="Storelevel">
+		select * from storelevel
+	</select>
+	<select id="selectOne" resultType="Storelevel">
+		select * from storelevel where
+		lvid=#{lvid}
+	</select>
+	<insert id="add">
+		insert into storelevel (lvname)
+		values (#{lvname})
+	</insert>
+	<delete id="delete">
+		delete from storelevel where lvid =#{lvid}
+	</delete>
+	<update id="update">
+		update storelevel
+		<set>
+			<if test="lvname!=null">
+				lvname=#{lvname},
+			</if>
+		</set>
+		where lvid=#{lvid}
+	</update>
+</mapper>

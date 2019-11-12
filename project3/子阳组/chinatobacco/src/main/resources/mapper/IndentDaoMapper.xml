@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinatobacco.dao.IndentDao">
+
+	<!-- 查询所有订单（多表联查-商户名称） -->
+	<resultMap type="Indent" id="resultMap1">
+		<id column="indentid" property="indentid" />
+		<association property="store"
+			select="com.chinatobacco.dao.StoreDao.selectOne" column="storeid" />
+		<association property="indentstate"
+			select="com.chinatobacco.dao.IndentstateDao.selectOne" column="stateid" />
+	</resultMap>
+
+	<select id="selectAll" resultMap="resultMap1">
+		select * from indent
+	</select>
+
+
+	<!-- 查询该商户的所有订单（多表联查-商户名称） -->
+
+	<select id="selectByStoreid" resultMap="resultMap1">
+		select * from indent
+		where storeid = #{storeid}
+	</select>
+
+
+
+	<!-- 根据订单状态查询订单（多表联查-商户名称） -->
+	<select id="selectByStateid" resultMap="resultMap1">
+		select * from indent
+		where stateid = #{stateid}
+	</select>
+
+
+
+	<!-- 根据订单状态查询该商户的订单（多表联查-商户名称） -->
+	<select id="findForStoreByState" resultMap="resultMap1">
+		select * from indent
+		where storeid = #{storeid} and stateid = #{stateid}
+	</select>
+
+
+	<!-- 根据订单编号查询订单（多表联查-商户名称） -->
+	<select id="selectByIndentid" resultMap="resultMap1">
+		select * from indent
+		where indentid = #{indentid}
+	</select>
+
+	<!-- 条件查询（多表联查-商户名称） -->
+	<select id="selectQuery" resultMap="resultMap1">
+		select * from indent
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="indentid!=0">
+				and indentid = #{indentid}
+			</if>
+			<if test="storeid!=0">
+				and storeid = #{storeid}
+			</if>
+			<if test="createdate!=null">
+				and createdate = #{createdate}
+			</if>
+			<if test="enddate!=null">
+				and enddate = #{enddate}
+			</if>
+			<if test="stateid!=0">
+				and stateid = #{stateid}
+			</if>
+			<if test="payid!=null">
+				and payid = #{payid}
+			</if>
+		</trim>
+	</select>
+
+
+	<!-- 新增订单 -->
+	<insert id="add">
+		insert into indent
+		(indentid,storeid,grossprice,createdate,enddate,stateid,payid)
+		values
+		(#{indentid},#{storeid},#{grossprice},#{createdate},#{enddate},#{stateid},#{payid})
+	</insert>
+
+	<!-- 删除订单 -->
+	<delete id="delete">
+		delete from indent where indentid = #{indentid}
+	</delete>
+
+	<!-- 修改订单 -->
+	<update id="update">
+		update indent
+		<set>
+			<if test="grossprice!=0">
+				grossprice=#{grossprice},
+			</if>
+			<if test="enddate!=null">
+				enddate=#{enddate},
+			</if>
+			<if test="stateid!=0">
+				stateid=#{stateid},
+			</if>
+			<if test="payid!=null">
+				payid=#{payid},
+			</if>
+		</set>
+		where indentid=#{indentid}
+	</update>
+</mapper>

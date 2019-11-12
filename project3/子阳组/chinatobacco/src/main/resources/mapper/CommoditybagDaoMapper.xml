@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinatobacco.dao.CommoditybagDao">
+	<resultMap type="Commoditybag" id="resultMap1">
+		<id column="bagid" property="bagid" />
+		<association property="commodity"
+			select="com.chinatobacco.dao.CommodityDao.selectOne" column="comid" />
+	</resultMap>
+	<select id="selectByIndet" resultMap="resultMap1">
+		select * from commoditybag
+		where indentid = #{indentid}
+	</select>
+	<insert id="add">
+		insert into commoditybag (comid,indentid,spnum)value
+		(#{comid},#{indentid},#{spnum})
+	</insert>
+	<delete id="delete">
+		delete from commoditybag where indentid = #{indentid}
+	</delete>
+	<update id="update">
+		update commoditybag
+		<set>
+			<if test="comid!=0">
+				comid=#{comid},
+			</if>
+			<if test="spnum!=0">
+				spnum=#{spnum},
+			</if>
+			<if test="indentid!=0">
+				indentid=#{indentid},
+			</if>
+		</set>
+		where bagid=#{bagid}
+	</update>
+</mapper>

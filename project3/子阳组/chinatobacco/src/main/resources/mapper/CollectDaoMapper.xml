@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinatobacco.dao.CollectDao">
+	<resultMap type="Collect" id="resultMap1">
+		<id column="collid" property="collid" />
+		<association property="commodity"
+			select="com.chinatobacco.dao.CommodityDao.selectOne" column="comid" />
+	</resultMap>
+	<select id="selectAll" resultMap="resultMap1">
+		select * from collect
+	</select>
+	<select id="selectOneByStoreid" resultMap="resultMap1">
+		select *
+		from collect
+		where storeid = #{storeid} and comid = #{comid}
+	</select>
+	<select id="selectByStoreid" resultMap="resultMap1">
+		select *
+		from collect
+		where storeid = #{storeid}
+	</select>
+	<select id="selectQuery" resultMap="resultMap1">
+		select * from collect
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="collid!=0">
+				and collid = #{collid}
+			</if>
+			<if test="comid!=0">
+				and comid = #{comid}
+			</if>
+			<if test="colldate!=null">
+				and colldate = #{colldate}
+			</if>
+			<if test="storeid!=0">
+				and storeid = #{storeid}
+			</if>
+		</trim>
+	</select>
+	<insert id="add">
+		insert into collect
+		(comid,colldate,storeid)value(#{comid},#{colldate},#{storeid})
+	</insert>
+	<delete id="delete">
+		delete from collect where collid in
+		<foreach collection="array" item="collid" open="(" separator=","
+			close=")">
+			#{collid}
+		</foreach>
+	</delete>
+</mapper>

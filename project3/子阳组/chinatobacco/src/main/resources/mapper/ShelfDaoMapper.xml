@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinatobacco.dao.ShelfDao">
+	<select id="selectAll" resultType="Shelf">
+		select * from shelf
+	</select>
+	<select id="selectOne" resultType="Shelf">
+		select * from shelf where
+		shelfid=#{shelfid}
+	</select>
+	<insert id="add">
+		insert into shelf (shelfname)
+		values (#{shelfname})
+	</insert>
+	<delete id="delete">
+		delete from shelf where shelfid =#{shelfid}
+	</delete>
+	<update id="update">
+		update shelf
+		<set>
+			<if test="shelfname!=null">
+				shelfname=#{shelfname},
+			</if>
+		</set>
+		where shelfid=#{shelfid}
+	</update>
+</mapper>

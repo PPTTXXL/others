@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinatobacco.dao.WaybillDao">
+	<resultMap type="Waybill" id="resultMap1">
+		<id column="wayid" property="wayid" />
+		<association property="store"
+			select="com.chinatobacco.dao.StoreDao.selectOne" column="storeid" />
+		<association property="indent"
+			select="com.chinatobacco.dao.IndentDao.selectByIndentid" column="indentid" />
+	</resultMap>
+
+	<select id="selectAll" resultMap="resultMap1">
+		select * from waybill
+	</select>
+	<select id="selectByStore" resultMap="resultMap1">
+		select * from waybill where
+		storeid=#{storeid}
+	</select>
+	<select id="selectByIndent" resultMap="resultMap1">
+		select * from waybill
+		where
+		indentid=#{indentid}
+	</select>
+	<insert id="add">
+		insert into waybill
+		(indentid,storeid,waydate,wayaddr) value
+		(#{indentid},#{storeid},#{waydate},#{wayaddr}) 
+	</insert>
+	<delete id="delete">
+		delete from waybill where wayid=#{wayid}
+	</delete>
+	<update id="update">
+		update waybill
+		<set>
+			<if test="indentid!=0">
+				indentid=#{indentid},
+			</if>
+			<if test="storeid!=0">
+				storeid=#{storeid},
+			</if>
+			<if test="waydate!=null">
+				storeid=#{storeid},
+			</if>
+			<if test="wayaddr!=null">
+				wayaddr=#{wayaddr}
+			</if>
+		</set>
+		where wayid=#{wayid}
+	</update>
+</mapper>

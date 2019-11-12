@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinatobacco.dao.RepertoryDao">
+	<resultMap type="Repertory" id="resultMap1">
+		<id column="id" property="id" />
+		<association property="commodity"
+			select="com.chinatobacco.dao.CommodityDao.selectOne" column="comid"></association>
+		<association property="location"
+			select="com.chinatobacco.dao.LocationDao.selectOne" column="locid"></association>
+	</resultMap>
+	<select id="selectAll" resultMap="resultMap1">
+		select * from repertory
+	</select>
+	<select id="selectByComid" resultMap="resultMap1">
+		select * from repertory
+		where comid=#{comid}
+	</select>
+	<insert id="add">
+		insert into
+		repertory(comid,num,locid)value(#{comid},#{num},#{locid})
+	</insert>
+
+	<delete id="delete">
+		delete from repertory where comid =#{comid}
+	</delete>
+	<update id="update">
+		update repertory
+		<set>
+			<if test="num!=0">
+				num=#{num},
+			</if>
+			<if test="locid!=0">
+				locid=#{locid}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+
+</mapper>

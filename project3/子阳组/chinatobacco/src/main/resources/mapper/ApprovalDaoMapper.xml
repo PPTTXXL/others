@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinatobacco.dao.ApprovalDao">
+
+
+	<resultMap type="Approval" id="resultMap1">
+		<id column="approvalid" property="approvalid" />
+		<result column="approvalnum" property="approvalnum" />
+		<result column="reason" property="reason" />
+		<association property="approvalstate"
+			select="com.chinatobacco.dao.ApprovalstateDao.selectOne" column="apstaid"></association>
+		<association property="user"
+			select="com.chinatobacco.dao.UserDao.selectById" column="uid"></association>
+	</resultMap>
+
+	<select id="selectAll" resultMap="resultMap1">
+		select * from approval
+	</select>
+
+	<select id="selectOne" resultMap="resultMap1">
+		select * from approval where
+		approvalid=#{approvalid}
+	</select>
+
+	<select id="selectByUid" resultMap="resultMap1">
+		select * from approval where
+		uid=#{uid}
+	</select>
+
+	<select id="selectQuery" resultMap="resultMap1">
+		select * from approval
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="approvalid!=0">
+				and approvalid = #{approvalid}
+			</if>
+			<if test="uid!=0">
+				and uid = #{uid}
+			</if>
+			<if test="apstaid!=0">
+				and apstaid = #{apstaid}
+			</if>
+			<if test="reason!=null">
+				and reason like '%${reason}%'
+			</if>
+		</trim>
+	</select>
+
+
+	<insert id="add">
+		insert into
+		approval(approvalid,uid,apstaid,approvalnum,reason)value(#{approvalid}
+		,#{uid},#{apstaid},#{approvalnum} , #{reason})
+	</insert>
+
+	<delete id="delete">
+		delete from approval where approvalid in
+		<foreach collection="array" item="approvalid" open="("
+			separator="," close=")">
+			#{approvalid}
+		</foreach>
+	</delete>
+
+	<update id="update">
+		update approval
+		<set>
+			<if test="apstaid!=0">
+				apstaid=#{apstaid},
+			</if>
+			<if test="approvalnum!=0">
+				approvalnum=#{approvalnum},
+			</if>
+			<if test="reason!=null">
+				reason=#{reason},
+			</if>
+		</set>
+		where approvalid=#{approvalid}
+	</update>
+
+</mapper>

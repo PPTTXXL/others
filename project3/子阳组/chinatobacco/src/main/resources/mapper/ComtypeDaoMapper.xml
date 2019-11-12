@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinatobacco.dao.ComtypeDao">
+	<select id="selectAll" resultType="Comtype">
+		select * from comtype
+	</select>
+
+	<select id="selectOne" resultType="Comtype">
+		select * from comtype where
+		comtypeid = #{comtypeid}
+	</select>
+
+	<insert id="add">
+		insert into comtype (comtypename) values
+		(#{comtypename})
+	</insert>
+
+	<delete id="delete">
+		delete from comtype where comtypeid = #{comtypeid}
+	</delete>
+
+	<update id="update">
+		update comtype
+		<set>
+			<if test="comtypename!=null">
+				comtypename=#{comtypename},
+			</if>
+		</set>
+		where comtypeid=#{comtypeid}
+	</update>
+
+
+</mapper>
